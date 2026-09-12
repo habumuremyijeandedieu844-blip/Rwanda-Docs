@@ -1,0 +1,1690 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RWANDA DOCS</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --card: rgba(15, 23, 42, 0.82);
+        --card-2: rgba(59, 30, 54, 0.95);
+        --primary: #8b5cf6;
+        --primary-2: #ec4899;
+        --text: #f8fafc;
+        --muted: #cbd5e1;
+        --success: #22c55e;
+        --border: rgba(255, 255, 255, 0.12);
+        --shadow: 0 24px 60px rgba(15, 23, 42, 0.55);
+        --gold: #fbbf24;
+        --gold-soft: #fde68a;
+      }
+
+      * { box-sizing: border-box; }
+
+      ::selection {
+        background: rgba(236, 72, 153, 0.65);
+        color: #fff;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: Arial, Helvetica, sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(139, 92, 246, 0.4), transparent 32%),
+          radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.25), transparent 28%),
+          linear-gradient(135deg, #020817 0%, #111827 42%, #0f172a 100%);
+        color: var(--text);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 56px 24px;
+      }
+
+      .app {
+        position: relative;
+        z-index: 1;
+        width: min(1200px, 100%);
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        backdrop-filter: blur(12px);
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 22px 30px;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(90deg, rgba(15, 23, 42, 0.88), rgba(59, 30, 54, 0.72));
+        backdrop-filter: blur(16px);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+
+      .brand-mark {
+        width: 60px;
+        height: 60px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        display: grid;
+        place-items: center;
+        font-size: 1.2rem;
+      }
+
+      .brand-logo {
+        width: 46px;
+        height: 46px;
+        border-radius:30px;
+        object-fit: cover;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.12);
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.35);
+      }
+
+      .menu {
+        display: flex;
+        gap: 18px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .menu span {
+        padding: 8px 12px;
+        border-radius: 999px;
+        transition: 0.2s ease;
+        cursor: pointer;
+      }
+
+      .menu span:hover {
+        background: rgba(255,255,255,0.05);
+        color: var(--text);
+      }
+
+      .mode-switcher {
+        display: flex;
+        gap: 8px;
+        margin-left: 10px;
+      }
+
+      .mode-btn {
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 8px 12px;
+        background: rgba(255,255,255,0.06);
+        color: var(--muted);
+        cursor: pointer;
+      }
+
+      .mode-btn.active {
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: white;
+        border-color: transparent;
+      }
+
+      .language-switcher {
+        display: flex;
+        gap: 6px;
+        margin-left: 8px;
+      }
+
+      .language-btn {
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 8px 10px;
+        background: rgba(255,255,255,0.06);
+        color: var(--muted);
+        cursor: pointer;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .language-btn.active {
+        background: rgba(251, 191, 36, 0.2);
+        border-color: var(--gold);
+        color: var(--gold-soft);
+      }
+
+      .public-mode .owner-only {
+        display: none !important;
+      }
+
+      .public-mode .viewer-section {
+        margin-top: 0;
+      }
+
+      .viewer-welcome {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        place-items: center;
+        padding: 24px;
+        background: rgba(2, 8, 23, 0.68);
+        backdrop-filter: blur(8px);
+      }
+
+      .public-mode .viewer-welcome {
+        display: grid;
+      }
+
+      .welcome-dialog {
+        width: min(560px, 100%);
+        text-align: center;
+        padding: 42px 34px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 28px;
+        background: linear-gradient(145deg, rgba(59, 30, 54, 0.98), rgba(15, 23, 42, 0.98));
+        box-shadow: 0 30px 80px rgba(2, 8, 23, 0.7);
+        animation: welcomeIn 0.35s ease-out;
+      }
+
+      .welcome-icon {
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 18px;
+        display: grid;
+        place-items: center;
+        border-radius: 22px;
+        font-size: 2rem;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      }
+
+      .welcome-language {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin: 0 auto 20px;
+      }
+
+      .welcome-language button {
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 8px 14px;
+        background: rgba(255,255,255,0.06);
+        color: var(--muted);
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .welcome-language button.active {
+        background: var(--gold);
+        color: #422006;
+        border-color: var(--gold);
+      }
+
+      .welcome-dialog h2 {
+        margin: 0 0 12px;
+        font-size: clamp(1.6rem, 4vw, 2.35rem);
+      }
+
+      .welcome-dialog p {
+        margin: 0 auto 24px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      @keyframes welcomeIn {
+        from { opacity: 0; transform: translateY(14px) scale(0.97); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+      }
+
+      /* End-user mode uses documentary and research imagery behind the page. */
+      body.public-mode {
+        background:
+          linear-gradient(rgba(2, 8, 23, 0.76), rgba(15, 23, 42, 0.88)),
+          url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=2200&q=85') center / cover fixed no-repeat;
+      }
+
+      body.public-mode::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=80') left bottom / 42% auto no-repeat,
+          url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80') right top / 38% auto no-repeat;
+        opacity: 0.18;
+        mix-blend-mode: screen;
+      }
+
+      .content {
+        padding: 38px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 28px;
+      }
+
+      .panel {
+        background: linear-gradient(145deg, rgba(59, 30, 54, 0.96), rgba(15, 23, 42, 0.9));
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 22px;
+        padding: 28px;
+        box-shadow: 0 14px 35px rgba(2, 8, 23, 0.2);
+        transition: transform 0.25s ease, border-color 0.25s ease;
+      }
+
+      .panel:hover {
+        transform: translateY(-3px);
+        border-color: rgba(196, 181, 253, 0.45);
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2.2rem, 4vw, 3.5rem);
+        line-height: 1.02;
+        letter-spacing: -0.04em;
+        background: linear-gradient(135deg, #fff, #ddd6fe 55%, #f9a8d4);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.02rem;
+        max-width: 620px;
+      }
+
+      .cta-row {
+        margin-top: 24px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 14px;
+        padding: 14px 22px;
+        font-weight: 700;
+        font-size: 0.96rem;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #a78bfa, #ec4899);
+        color: #fff;
+        box-shadow: 0 14px 32px rgba(139, 92, 246, 0.4);
+      }
+
+      .btn-secondary {
+        background: rgba(255,255,255,0.06);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(120px, 1fr));
+        gap: 14px;
+        margin-top: 26px;
+      }
+
+      .stat {
+        background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025));
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        padding: 18px;
+        transition: transform 0.2s ease, background 0.2s ease;
+      }
+
+      .stat:hover {
+        transform: translateY(-3px);
+        background: rgba(139, 92, 246, 0.15);
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.5rem;
+        margin-bottom: 4px;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .upload-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .dropzone {
+        position: relative;
+        min-height: 250px;
+        border: 1.5px dashed rgba(255,255,255,0.3);
+        border-radius: 22px;
+        background: radial-gradient(circle at center, rgba(139, 92, 246, 0.2), transparent 62%), linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(236, 72, 153, 0.12));
+        display: grid;
+        place-items: center;
+        text-align: center;
+        padding: 24px;
+        transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+      }
+
+      .dropzone.dragover {
+        border-color: rgba(255,255,255,0.7);
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.14), rgba(236, 72, 153, 0.14));
+        transform: scale(1.01);
+      }
+
+      .dropzone-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .drop-icon {
+        width: 76px;
+        height: 76px;
+        border-radius: 22px;
+        background: linear-gradient(135deg, rgba(167, 139, 250, 0.28), rgba(236, 72, 153, 0.2));
+        border: 1px solid rgba(255,255,255,0.2);
+        display: grid;
+        place-items: center;
+        font-size: 2rem;
+        box-shadow: 0 12px 30px rgba(139, 92, 246, 0.22);
+      }
+
+      .dropzone h3 {
+        margin: 0;
+        font-size: 1.3rem;
+      }
+
+      .dropzone p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+
+      .file-meta {
+        display: none;
+        background: rgba(255,255,255,0.03);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        padding: 14px 16px;
+      }
+
+      .file-meta.visible {
+        display: block;
+      }
+
+      .file-meta strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .video-section {
+        margin-top: 28px;
+        display: grid;
+        grid-template-columns: 1.4fr 0.6fr;
+        gap: 24px;
+      }
+
+      .video-box {
+        background: rgba(15, 23, 42, 0.65);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 18px;
+      }
+
+      video {
+        width: 100%;
+        display: block;
+        border-radius: 18px;
+        background: #000;
+        min-height: 320px;
+      }
+
+      .video-details {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .detail-card {
+        background: rgba(255,255,255,0.03);
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        padding: 16px;
+      }
+
+      .detail-card h4 {
+        margin: 0 0 8px;
+        font-size: 1rem;
+      }
+
+      .progress-wrap {
+        display: none;
+      }
+
+      .progress-wrap.visible {
+        display: block;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 12px;
+        background: rgba(255,255,255,0.08);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-top: 8px;
+      }
+
+      .progress-fill {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        border-radius: inherit;
+        transition: width 0.2s ease;
+      }
+
+      .upload-list {
+        margin-top: 28px;
+      }
+
+      .upload-list h3 {
+        margin-bottom: 16px;
+      }
+
+      .items {
+        display: grid;
+        gap: 12px;
+      }
+
+      .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 14px 16px;
+      }
+
+      .item-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .item-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(236, 72, 153, 0.35));
+        display: grid;
+        place-items: center;
+      }
+
+      .item-meta {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .item-meta strong {
+        font-size: 0.96rem;
+      }
+
+      .item-meta span {
+        color: var(--muted);
+        font-size: 0.84rem;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .mini-btn {
+        border: none;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.06);
+        color: var(--text);
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+
+      .mini-btn.danger {
+        background: rgba(239, 68, 68, 0.12);
+        color: #fca5a5;
+      }
+
+      .pricing-section {
+        margin-top: 28px;
+      }
+
+      .section-head {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      .eyebrow {
+        color: var(--gold-soft);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 0.76rem;
+        font-weight: 700;
+      }
+
+      .section-head h3 {
+        margin: 0;
+        font-size: clamp(1.6rem, 2vw, 2.2rem);
+      }
+
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .plan {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 22px 18px;
+        position: relative;
+      }
+
+      .plan.popular {
+        border-color: rgba(192, 132, 252, 0.8);
+        background: linear-gradient(180deg, rgba(139, 92, 246, 0.12), rgba(255,255,255,0.03));
+      }
+
+      .plan-badge {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: rgba(34, 197, 94, 0.18);
+        color: #bbf7d0;
+        border: 1px solid rgba(34, 197, 94, 0.5);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 0.72rem;
+        font-weight: 700;
+      }
+
+      .plan h4 {
+        margin: 0 0 12px;
+        font-size: 1.05rem;
+      }
+
+      .price {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+        margin-bottom: 10px;
+      }
+
+      .price strong {
+        font-size: 2rem;
+        line-height: 1;
+      }
+
+      .price span {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .plan p {
+        margin: 0 0 14px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .plan ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 20px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .plan li {
+        color: var(--text);
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .plan li::before {
+        content: '✓';
+        color: #86efac;
+        font-weight: 700;
+      }
+
+      .plan button {
+        width: 100%;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-weight: 700;
+        cursor: pointer;
+        background: rgba(255,255,255,0.08);
+        color: var(--text);
+      }
+
+      .plan.popular button {
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      }
+
+      .payment-note {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border: 1px solid rgba(251, 191, 36, 0.35);
+        border-radius: 16px;
+        background: rgba(251, 191, 36, 0.08);
+        color: var(--muted);
+      }
+
+      .payment-note strong {
+        color: #fde68a;
+      }
+
+      .payment-number {
+        color: var(--text);
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+
+      .analytics-section {
+        margin-top: 28px;
+        padding: 24px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+      }
+
+      .analytics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .analytics-card {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 18px;
+      }
+
+      .analytics-card strong {
+        display: block;
+        font-size: 1.6rem;
+        margin-bottom: 6px;
+      }
+
+      .analytics-card span,
+      .analytics-section small {
+        color: var(--muted);
+      }
+
+      .analytics-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      .analytics-table th,
+      .analytics-table td {
+        text-align: left;
+        padding: 12px 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .analytics-table th {
+        color: #c4b5fd;
+        font-size: 0.82rem;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: 900px) {
+        .analytics-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      .about-section {
+        margin-top: 28px;
+        padding: 24px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+      }
+
+      .about-section h3 {
+        margin: 6px 0 10px;
+        font-size: 1.5rem;
+      }
+
+      .about-section p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .contact-section {
+        margin-top: 28px;
+        padding: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+      }
+
+      .contact-section h3 {
+        margin: 6px 0;
+        font-size: 1.5rem;
+      }
+
+      .contact-section p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .whatsapp-btn {
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .support-assistant {
+        margin-top: 22px;
+        padding-top: 22px;
+        border-top: 1px solid var(--border);
+      }
+
+      .chat-box {
+        min-height: 110px;
+        max-height: 220px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 12px 0;
+        padding: 12px;
+        background: rgba(15, 23, 42, 0.45);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+      }
+
+      .chat-message {
+        max-width: 90%;
+        padding: 10px 12px;
+        border-radius: 12px;
+        line-height: 1.45;
+        font-size: 0.9rem;
+      }
+
+      .chat-message.bot {
+        align-self: flex-start;
+        background: rgba(139, 92, 246, 0.18);
+      }
+
+      .chat-message.user {
+        align-self: flex-end;
+        background: rgba(255,255,255,0.08);
+      }
+
+      .chat-form {
+        display: flex;
+        gap: 10px;
+      }
+
+      .chat-form input {
+        flex: 1;
+        min-width: 0;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px;
+        background: rgba(255,255,255,0.06);
+        color: var(--text);
+        outline: none;
+      }
+
+      .chat-form input::placeholder {
+        color: var(--muted);
+      }
+
+      .chat-form button {
+        border: none;
+        border-radius: 12px;
+        padding: 12px 16px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .viewer-section {
+        scroll-margin-top: 24px;
+        margin-top: 28px;
+        padding: 24px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+      }
+
+      .viewer-section h3 {
+        margin: 0 0 6px;
+      }
+
+      .viewer-section p {
+        margin: 0 0 18px;
+        color: var(--muted);
+      }
+
+      .viewer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+      }
+
+      .viewer-empty {
+        color: var(--muted);
+        padding: 18px;
+        border: 1px dashed var(--border);
+        border-radius: 14px;
+      }
+
+      .viewer-card {
+        overflow: hidden;
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+      }
+
+      .viewer-card video {
+        width: 100%;
+        min-height: 150px;
+        border-radius: 0;
+      }
+
+      .viewer-card-body {
+        padding: 12px;
+      }
+
+      .viewer-card-body strong {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .viewer-card-body span {
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      @media (max-width: 900px) {
+        body {
+          align-items: flex-start;
+          padding: 20px 12px;
+        }
+
+        .content {
+          padding: 20px;
+        }
+
+        .hero,
+        .video-section {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
+        }
+
+        .contact-section {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .whatsapp-btn {
+          white-space: normal;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="viewer-welcome" id="viewerWelcome" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+      <div class="welcome-dialog">
+        <div class="welcome-icon">🎬</div>
+        <div class="welcome-language" aria-label="Language selection">
+          <button id="welcomeEnglishBtn" type="button" class="active">ENGLISH</button>
+          <button id="welcomeKinyarwandaBtn" type="button">KINYARWANDA</button>
+        </div>
+        <h2 id="welcomeTitle" data-i18n="welcomeTitle">Watch Free-Ad HD Documentary by JD.</h2>
+        <p data-i18n="welcomeText">Explore informative, research-based documentaries in high-definition quality.</p>
+        <button class="btn btn-primary" id="startWatchingBtn" type="button" data-i18n="startWatching">Start Watching</button>
+      </div>
+    </div>
+
+    <div class="app">
+              <div class="topbar" id="home">
+        <div class="brand">
+          <img
+            class="brand-logo"
+            src="./ChatGPT Image Sep 11, 2026, 03_02_38 PM.png"
+            alt="DOCUMENTARY logo"
+          />
+          <span>DOCUMENTARY</span>
+        </div>
+
+        <div class="menu">
+          <span data-target="home" data-i18n="home">Home</span>
+          <span data-target="viewerSection" data-i18n="videos">Videos</span>
+          <span data-target="aboutSection" data-i18n="about">About</span>
+          <span data-target="analyticsSection" class="owner-only" data-i18n="analytics">Analytics</span>
+          <span data-target="contactSection" data-i18n="support">Support</span>
+          <div class="mode-switcher" aria-label="Interface mode">
+            <button class="mode-btn active owner-only" id="ownerModeBtn" type="button" data-i18n="owner">Owner</button>
+            <button class="mode-btn" id="viewerModeBtn" type="button" data-i18n="endUser">End user</button>
+            <div class="language-switcher" aria-label="Language">
+              <button class="language-btn active" id="englishBtn" type="button">EN</button>
+              <button class="language-btn" id="kinyarwandaBtn" type="button">RW</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="hero owner-only">
+          <section class="panel">
+            <h1>Watch Free-Ad HD Documentary by JD.</h1>
+            <p class="subtitle">
+              Drag and drop a video file, preview it instantly, and add it to your video library.
+            </p>
+
+            <div class="cta-row">
+              <button class="btn btn-primary" id="chooseFileBtn">Choose Video</button>
+              <button class="btn btn-secondary" id="uploadBtn">Upload Now</button>
+            </div>
+
+            <div class="stats">
+              <div class="stat">
+                <strong>12K+</strong>
+                <span>Videos stored</span>
+              </div>
+              <div class="stat">
+                <strong>99.9%</strong>
+                <span>Uptime</span>
+              </div>
+              <div class="stat">
+                <strong>4.8/5</strong>
+                <span>User rating</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel upload-panel">
+            <form>
+              <input id="videoInput" type="file" accept="video/*" />
+            </form>
+
+            <div class="dropzone" id="dropzone">
+              <div class="dropzone-inner">
+                <div class="drop-icon">⬆</div>
+                <h3>Drop your video here</h3>
+                <p>MP4, MOV, AVI, MKV up to 5GB</p>
+              </div>
+            </div>
+
+            <div class="file-meta" id="fileMeta">
+              <strong id="fileName">No file selected</strong>
+              <span id="fileDetails">Choose a video from your device</span>
+            </div>
+          </section>
+        </div>
+
+        <div class="video-section owner-only">
+          <div class="video-box">
+            <video id="videoPreview" controls playsinline></video>
+          </div>
+
+          <div class="video-details">
+            <div class="detail-card">
+              <h4>Video Summary</h4>
+              <p id="videoSummary">Select a file to see the preview and upload details.</p>
+            </div>
+
+            <div class="detail-card">
+              <h4>Upload Progress</h4>
+              <div class="progress-wrap" id="progressWrap">
+                <div id="progressText">0% uploaded</div>
+                <div class="progress-bar">
+                  <div class="progress-fill" id="progressFill"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pricing-section owner-only">
+          <div class="section-head">
+            <span class="eyebrow">Premium plans</span>
+            <h3>Choose your access</h3>
+          </div>
+
+                      <div class="pricing-grid">
+            <article class="plan">
+              <div class="plan-badge">Single</div>
+              <h4>One Documentary</h4>
+              <div class="price">
+                <strong>50</strong>
+                <span>RWF</span>
+              </div>
+              <p>Pay only for the documentary you want to watch.</p>
+              <ul>
+                <li>Instant access</li>
+                <li>One-time payment</li>
+                <li>HD quality</li>
+              </ul>
+              <button type="button" data-payment="50">Pay 50 RWF</button>
+            </article>
+
+            <article class="plan popular">
+              <div class="plan-badge">Popular</div>
+              <h4>Weekly</h4>
+              <div class="price">
+                <strong>300</strong>
+                <span>RWF</span>
+              </div>
+              <p>Perfect for regular viewing during the week.</p>
+              <ul>
+                <li>Weekly unlimited access</li>
+                <li>Priority support</li>
+                <li>New uploads included</li>
+              </ul>
+              <button type="button" data-payment="300">Pay 300 RWF</button>
+            </article>
+
+            <article class="plan">
+              <div class="plan-badge">Best value</div>
+              <h4>Monthly</h4>
+              <div class="price">
+                <strong>1500</strong>
+                <span>RWF</span>
+              </div>
+              <p>Enjoy full monthly access to premium documentaries.</p>
+              <ul>
+                <li>Unlimited monthly streams</li>
+                <li>Exclusive content</li>
+                <li>Watch on any device</li>
+              </ul>
+              <button type="button" data-payment="1500">Pay 1500 RWF</button>
+            </article>
+
+            <article class="plan">
+              <div class="plan-badge">Save 15%</div>
+              <h4>Yearly</h4>
+              <div class="price">
+                <strong>15000</strong>
+                <span>RWF</span>
+              </div>
+              <p>Best long-term plan for fans and regular subscribers.</p>
+              <ul>
+                <li>Unlimited yearly access</li>
+                <li>Best savings</li>
+                <li>VIP content updates and 4k resolution video quality </li>
+              </ul>
+              <button type="button" data-payment="15000">Pay 15000 RWF</button>
+            </article>
+          </div>
+
+          <div class="payment-note">
+            <strong>MTN Mobile Money payment</strong><br />
+            Send your payment to <span class="payment-number">0791 003 863</span>.
+            Include your documentary or plan name in the payment reference.
+          </div>
+        </div>
+
+        <section class="analytics-section owner-only" id="analyticsSection">
+          <span class="eyebrow">Owner dashboard</span>
+          <h3>Video Analytics</h3>
+          <small>Live estimates based on activity recorded in this browser session.</small>
+
+          <div class="analytics-grid">
+            <div class="analytics-card">
+              <strong id="totalViews">0</strong>
+              <span>Total video views</span>
+            </div>
+            <div class="analytics-card">
+              <strong id="uniqueVideos">0</strong>
+              <span>Videos watched</span>
+            </div>
+            <div class="analytics-card">
+              <strong id="totalPaid">0 RWF</strong>
+              <span>Payments recorded</span>
+            </div>
+            <div class="analytics-card">
+              <strong id="estimatedRevenue">0 RWF</strong>
+              <span>Estimated earnings</span>
+            </div>
+          </div>
+
+          <table class="analytics-table">
+            <thead>
+              <tr><th>Video</th><th>Views</th><th>Watch time</th><th>Revenue</th></tr>
+            </thead>
+            <tbody id="analyticsRows">
+              <tr><td colspan="4">No video activity yet.</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="about-section" id="aboutSection">
+          <span class="eyebrow">About us</span>
+          <h3>Official HD Documentary Website</h3>
+          <p>
+            This is the official website offering high-definition documentaries in Kinyarwanda and English.
+            Our documentaries are based on highly researched information and are created to provide viewers
+            with informative, reliable, and engaging stories.
+          </p>
+        </section>
+
+        <section class="contact-section" id="contactSection">
+          <div>
+            <span class="eyebrow">Need help?</span>
+            <h3>Contact Us</h3>
+            <p>For payment help, access questions, or technical support, contact us on WhatsApp.</p>
+          </div>
+          <a class="btn btn-primary whatsapp-btn" href="https://wa.me/250791003863" target="_blank" rel="noopener">
+            Chat on WhatsApp: +250 791 003 863
+          </a>
+
+          <div class="support-assistant">
+            <span class="eyebrow">Quick help assistant</span>
+            <h4>How can we help?</h4>
+            <div class="chat-box" id="chatBox" aria-live="polite">
+              <div class="chat-message bot">Hello! Ask me about payments, watching videos, uploading, or technical help.</div>
+            </div>
+            <form class="chat-form" id="chatForm">
+              <input id="chatInput" type="text" placeholder="Type your question..." autocomplete="off" />
+              <button type="submit">Send</button>
+            </form>
+          </div>
+        </section>
+
+        <div class="viewer-section" id="viewerSection">
+          <h3 data-i18n="viewerTitle">Documentary viewer</h3>
+          <p data-i18n="viewerText">End users can watch the documentaries that have been uploaded.</p>
+          <div class="viewer-grid" id="viewerGrid">
+            <div class="viewer-empty" id="viewerEmpty" data-i18n="viewerEmpty">No documentaries are available yet.</div>
+          </div>
+        </div>
+
+        <div class="upload-list owner-only">
+          <h3>Recent uploads</h3>
+          <div class="items" id="uploadList"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const input = document.getElementById('videoInput');
+      const chooseFileBtn = document.getElementById('chooseFileBtn');
+      const uploadBtn = document.getElementById('uploadBtn');
+      const dropzone = document.getElementById('dropzone');
+      const videoPreview = document.getElementById('videoPreview');
+      const fileMeta = document.getElementById('fileMeta');
+      const fileName = document.getElementById('fileName');
+      const fileDetails = document.getElementById('fileDetails');
+      const videoSummary = document.getElementById('videoSummary');
+      const progressWrap = document.getElementById('progressWrap');
+      const progressText = document.getElementById('progressText');
+      const progressFill = document.getElementById('progressFill');
+      const uploadList = document.getElementById('uploadList');
+      const viewerGrid = document.getElementById('viewerGrid');
+      const viewerEmpty = document.getElementById('viewerEmpty');
+      const ownerModeBtn = document.getElementById('ownerModeBtn');
+      const viewerModeBtn = document.getElementById('viewerModeBtn');
+      const viewerWelcome = document.getElementById('viewerWelcome');
+      const startWatchingBtn = document.getElementById('startWatchingBtn');
+      const totalViews = document.getElementById('totalViews');
+      const uniqueVideos = document.getElementById('uniqueVideos');
+      const totalPaid = document.getElementById('totalPaid');
+      const estimatedRevenue = document.getElementById('estimatedRevenue');
+      const analyticsRows = document.getElementById('analyticsRows');
+      const chatForm = document.getElementById('chatForm');
+      const chatInput = document.getElementById('chatInput');
+      const chatBox = document.getElementById('chatBox');
+      const englishBtn = document.getElementById('englishBtn');
+      const kinyarwandaBtn = document.getElementById('kinyarwandaBtn');
+      const welcomeEnglishBtn = document.getElementById('welcomeEnglishBtn');
+      const welcomeKinyarwandaBtn = document.getElementById('welcomeKinyarwandaBtn');
+      const translations = {
+        en: {
+          welcomeTitle: 'Watch Free-Ad HD Documentary by JD.',
+          welcomeText: 'Explore informative, research-based documentaries in high-definition quality.',
+          startWatching: 'Start Watching', home: 'Home', videos: 'Videos', about: 'About',
+          analytics: 'Analytics', support: 'Support', owner: 'Owner', endUser: 'End user',
+          viewerTitle: 'Documentary viewer',
+          viewerText: 'End users can watch the documentaries that have been uploaded.',
+          viewerEmpty: 'No documentaries are available yet.',
+        },
+        rw: {
+          welcomeTitle: 'Reba Documentary ya HD ya JD itarimo amatangazo.',
+          welcomeText: 'Menya documentaries zifite amakuru yizewe kandi zakozwe hifashishijwe ubushakashatsi.',
+          startWatching: 'Tangira kureba', home: 'Ahabanza', videos: 'Videos', about: 'Abo turi bo',
+          analytics: 'Imibare', support: 'Ubufasha', owner: 'Nyir’urubuga', endUser: 'Umureba',
+          viewerTitle: 'Reba Documentary',
+          viewerText: 'Abakoresha bashobora kureba documentaries zashyizwe kuri uru rubuga.',
+          viewerEmpty: 'Nta documentaries zirashyirwaho.',
+        }
+      };
+
+      function setLanguage(language) {
+        document.documentElement.lang = language === 'rw' ? 'rw' : 'en';
+        document.querySelectorAll('[data-i18n]').forEach((element) => {
+          const key = element.dataset.i18n;
+          if (translations[language][key]) element.textContent = translations[language][key];
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
+          const key = element.dataset.i18nPlaceholder;
+          if (translations[language][key]) element.placeholder = translations[language][key];
+        });
+        englishBtn.classList.toggle('active', language === 'en');
+        kinyarwandaBtn.classList.toggle('active', language === 'rw');
+        welcomeEnglishBtn.classList.toggle('active', language === 'en');
+        welcomeKinyarwandaBtn.classList.toggle('active', language === 'rw');
+        localStorage.setItem('documentaryLanguage', language);
+      }
+
+      englishBtn.addEventListener('click', () => setLanguage('en'));
+      kinyarwandaBtn.addEventListener('click', () => setLanguage('rw'));
+      welcomeEnglishBtn.addEventListener('click', () => setLanguage('en'));
+      welcomeKinyarwandaBtn.addEventListener('click', () => setLanguage('rw'));
+      setLanguage(localStorage.getItem('documentaryLanguage') || 'en');
+
+      let analytics = {
+        views: 0,
+        payments: 0,
+        watchSeconds: 0,
+        videos: {}
+      };
+
+      function setInterfaceMode(mode) {
+        const isViewer = mode === 'viewer';
+        document.body.classList.toggle('public-mode', isViewer);
+        ownerModeBtn.classList.toggle('active', !isViewer);
+        viewerModeBtn.classList.toggle('active', isViewer);
+        if (isViewer) {
+          renderViewer();
+        }
+      }
+
+      function closeWelcomeDialog() {
+        // Keep the visitor in public mode so owner tools remain hidden.
+        document.body.classList.add('public-mode');
+        viewerWelcome.style.display = 'none';
+        ownerModeBtn.classList.remove('active');
+        viewerModeBtn.classList.add('active');
+        document.getElementById('viewerSection').scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+
+      startWatchingBtn.addEventListener('click', closeWelcomeDialog);
+      viewerWelcome.addEventListener('click', (event) => {
+        if (event.target === viewerWelcome) closeWelcomeDialog();
+      });
+
+      ownerModeBtn.addEventListener('click', () => setInterfaceMode('owner'));
+      viewerModeBtn.addEventListener('click', () => setInterfaceMode('viewer'));
+
+      // Visitors see the documentary homepage first.
+      setInterfaceMode('viewer');
+
+      chatForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const question = chatInput.value.trim();
+        if (!question) return;
+
+        addChatMessage(question, 'user');
+        addChatMessage(getSupportAnswer(question), 'bot');
+        chatInput.value = '';
+      });
+
+      function addChatMessage(message, type) {
+        const messageElement = document.createElement('div');
+        messageElement.className = 'chat-message ' + type;
+        messageElement.textContent = message;
+        chatBox.appendChild(messageElement);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function getSupportAnswer(question) {
+        const text = question.toLowerCase();
+
+        if (text.includes('pay') || text.includes('mtn') || text.includes('money') || text.includes('price')) {
+          return 'To pay, send the plan amount to MTN Mobile Money number 0791 003 863 and include the documentary or plan name as the reference.';
+        }
+
+        if (text.includes('watch') || text.includes('video') || text.includes('documentary')) {
+          return 'Open Videos from the menu, choose a documentary, and press the play button. Available uploaded videos appear in the viewer.';
+        }
+
+        if (text.includes('upload') || text.includes('owner')) {
+          return 'Owners can choose or drop a video in Owner mode, preview it, and select Upload Now. End users cannot see the upload controls or progress.';
+        }
+
+        if (text.includes('access') || text.includes('login') || text.includes('account')) {
+          return 'For access or payment confirmation, contact support on WhatsApp at +250 791 003 863.';
+        }
+
+        if (text.includes('error') || text.includes('problem') || text.includes('help')) {
+          return 'Please refresh the page and try again. If the problem continues, contact us on WhatsApp at +250 791 003 863.';
+        }
+
+        return 'I can help with payments, video watching, uploads, and access questions. For more assistance, contact WhatsApp support at +250 791 003 863.';
+      }
+
+      document.querySelectorAll('[data-payment]').forEach((paymentButton) => {
+        paymentButton.addEventListener('click', () => {
+          const amount = Number(paymentButton.dataset.payment);
+          analytics.payments += amount;
+          renderAnalytics();
+          alert(amount.toLocaleString() + ' RWF recorded in the demo analytics. Verify the MTN payment before treating it as confirmed.');
+        });
+      });
+
+      renderAnalytics();
+
+      document.querySelectorAll('.menu span[data-target]').forEach((menuItem) => {
+        menuItem.addEventListener('click', () => {
+          if (menuItem.dataset.target === 'home' && document.body.classList.contains('public-mode')) {
+            viewerWelcome.style.display = 'grid';
+            return;
+          }
+
+          if (menuItem.dataset.target === 'viewerSection') {
+            renderViewer();
+          }
+
+          if (menuItem.dataset.target === 'analyticsSection') {
+            renderAnalytics();
+          }
+
+          document.getElementById(menuItem.dataset.target).scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        });
+      });
+
+      let selectedFile = null;
+      let selectedVideoUrl = null;
+      let uploadItems = [];
+
+      chooseFileBtn.addEventListener('click', () => input.click());
+
+      input.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          handleFile(file);
+        }
+      });
+
+      ['dragenter', 'dragover'].forEach((eventName) => {
+        dropzone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          dropzone.classList.add('dragover');
+        });
+      });
+
+      ['dragleave', 'drop'].forEach((eventName) => {
+        dropzone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          dropzone.classList.remove('dragover');
+        });
+      });
+
+      dropzone.addEventListener('drop', (event) => {
+        const file = event.dataTransfer.files[0];
+        if (file) {
+          handleFile(file);
+        }
+      });
+
+      uploadBtn.addEventListener('click', () => {
+        if (!selectedFile) {
+          alert('Please select a video first.');
+          return;
+        }
+
+        let percent = 0;
+        progressWrap.classList.add('visible');
+        progressText.textContent = 'Uploading...';
+        progressFill.style.width = '0%';
+
+        const interval = setInterval(() => {
+          percent += 10;
+          progressFill.style.width = percent + '%';
+          progressText.textContent = percent + '% uploaded';
+
+          if (percent >= 100) {
+            clearInterval(interval);
+            addUploadItem(selectedFile);
+            progressText.textContent = 'Upload complete';
+          }
+        }, 180);
+      });
+
+      function handleFile(file) {
+        if (!file.type.startsWith('video/')) {
+          alert('Please choose a valid video file.');
+          return;
+        }
+
+        selectedFile = file;
+
+        if (selectedVideoUrl) {
+          URL.revokeObjectURL(selectedVideoUrl);
+        }
+
+        selectedVideoUrl = URL.createObjectURL(file);
+        videoPreview.src = selectedVideoUrl;
+        videoPreview.load();
+
+        fileMeta.classList.add('visible');
+        fileName.textContent = file.name;
+        fileDetails.textContent = `${formatFileSize(file.size)} • ${file.type}`;
+        videoSummary.textContent = `${file.name} is ready to preview and upload.`;
+
+        progressWrap.classList.remove('visible');
+        progressFill.style.width = '0%';
+        progressText.textContent = '0% uploaded';
+      }
+
+      function addUploadItem(file) {
+        const now = new Date();
+        const item = {
+          id: Date.now(),
+          name: file.name,
+          size: formatFileSize(file.size),
+          date: now.toLocaleDateString(),
+          downloadUrl: selectedVideoUrl
+        };
+
+        uploadItems.unshift(item);
+        renderUploads();
+        renderViewer();
+      }
+
+      function renderViewer() {
+        viewerGrid.innerHTML = '';
+
+        if (uploadItems.length === 0) {
+          viewerGrid.appendChild(viewerEmpty);
+          return;
+        }
+
+        uploadItems.forEach((item) => {
+          const card = document.createElement('article');
+          card.className = 'viewer-card';
+
+          const video = document.createElement('video');
+          video.src = item.downloadUrl;
+          video.controls = true;
+          video.playsInline = true;
+          video.preload = 'metadata';
+          video.addEventListener('play', () => recordView(item));
+          video.addEventListener('timeupdate', () => {
+            const currentTime = Math.floor(video.currentTime);
+            const previousTime = item.lastTrackedSecond || 0;
+            if (currentTime > previousTime) {
+              const watched = currentTime - previousTime;
+              analytics.watchSeconds += watched;
+              item.lastTrackedSecond = currentTime;
+              if (analytics.videos[item.id]) {
+                analytics.videos[item.id].watchSeconds += watched;
+              }
+              renderAnalytics();
+            }
+          });
+
+          const body = document.createElement('div');
+          body.className = 'viewer-card-body';
+          body.innerHTML = `<strong></strong><span>${item.size} • ${item.date}</span>`;
+          body.querySelector('strong').textContent = item.name;
+
+          card.append(video, body);
+          viewerGrid.appendChild(card);
+        });
+      }
+
+      function recordView(item) {
+        analytics.views += 1;
+        if (!analytics.videos[item.id]) {
+          analytics.videos[item.id] = {
+            name: item.name,
+            views: 0,
+            watchSeconds: 0,
+            revenue: 0
+          };
+        }
+        analytics.videos[item.id].views += 1;
+        renderAnalytics();
+      }
+
+      function renderAnalytics() {
+        const entries = Object.values(analytics.videos);
+        totalViews.textContent = analytics.views;
+        uniqueVideos.textContent = entries.length;
+        totalPaid.textContent = analytics.payments.toLocaleString() + ' RWF';
+        estimatedRevenue.textContent = analytics.payments.toLocaleString() + ' RWF';
+
+        if (entries.length === 0) {
+          analyticsRows.innerHTML = '<tr><td colspan="4">No video activity yet.</td></tr>';
+          return;
+        }
+
+        analyticsRows.innerHTML = entries.map((entry) => `
+          <tr>
+            <td>${entry.name}</td>
+            <td>${entry.views}</td>
+            <td>${formatWatchTime(entry.watchSeconds)}</td>
+            <td>${entry.revenue.toLocaleString()} RWF</td>
+          </tr>
+        `).join('');
+      }
+
+      function formatWatchTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return minutes + 'm ' + remainingSeconds + 's';
+      }
+
+      function renderUploads() {
+        uploadList.innerHTML = '';
+
+        uploadItems.forEach((item) => {
+          const row = document.createElement('div');
+          row.className = 'item';
+          row.innerHTML = `
+            <div class="item-left">
+              <div class="item-icon">🎬</div>
+              <div class="item-meta">
+                <strong>${item.name}</strong>
+                <span>${item.size} • ${item.date}</span>
+              </div>
+            </div>
+            <div class="actions">
+              <button class="mini-btn preview-btn" type="button">Open</button>
+              <a class="mini-btn download-btn" href="${item.downloadUrl}" download="${item.name}" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Download</a>
+              <button class="mini-btn danger" type="button">Remove</button>
+            </div>
+          `;
+
+          row.querySelector('.preview-btn').addEventListener('click', () => {
+            if (item.downloadUrl) {
+              videoPreview.src = item.downloadUrl;
+              videoPreview.load();
+              videoPreview.play();
+            }
+          });
+
+          row.querySelector('.mini-btn.danger').addEventListener('click', () => {
+            uploadItems = uploadItems.filter((entry) => entry.id !== item.id);
+            if (item.downloadUrl) {
+              URL.revokeObjectURL(item.downloadUrl);
+            }
+            renderUploads();
+            renderViewer();
+          });
+
+          uploadList.appendChild(row);
+        });
+      }
+
+      function formatFileSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+      }
+    </script>
+  </body>
+</html>
